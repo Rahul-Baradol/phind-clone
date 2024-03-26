@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react'
 function page() {
    const searchParams = useSearchParams();
    const [query, setQuery] = useState(searchParams.get("query"));
-   const [data, setData] = useState(null);
+   const [data, setData] = useState<any[] | null>(null);
 
    useEffect(() => {
       if (query) {
