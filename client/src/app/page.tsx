@@ -22,24 +22,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import Link from "next/link";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: "100"
+});
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
 
   return (
-      <>
-        <div className="w-screen h-screen flex flex-col items-center justify-center gap-5">
-          <div className={`text-5xl h-fit w-fit `}>
-            phind
-          </div>
+    <>
+      <div className="w-screen h-[90vh] flex flex-col items-center justify-center gap-5">
+        <div className={`${poppins.className} text-5xl h-fit w-fit `}>
+          phind
+        </div>
 
-          <Card className="w-[40vw] dark pt-7">
-            <CardContent> 
-              <Input value={prompt} onChange={e => {
-                setPrompt(e.target.value);
-              }} type="text" placeholder="How may i help you?" />
-            </CardContent>
-            <CardFooter className="flex justify-end">
+        <Card className="w-[80vw] sm:w-[45vw] dark pt-7">
+          <CardContent>
+            <Input value={prompt} onChange={e => {
+              setPrompt(e.target.value);
+            }} type="text" placeholder="How may i help you?" />
+          </CardContent>
+          <CardFooter className="flex justify-end">
+            <Link href={`/prompt?query=${prompt}`}>
               <Button onClick={async () => {
                 try {
                   const response = await fetch("http://localhost:8000/prompt", {
@@ -58,9 +65,10 @@ export default function Home() {
                   console.log("failed to fetch");
                 }
               }}>Submit</Button>
-            </CardFooter>
-          </Card>
-        </div>
-      </>
+            </Link>
+          </CardFooter>
+        </Card>
+      </div>
+    </>
   );
 }
