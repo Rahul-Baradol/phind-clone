@@ -16,12 +16,12 @@ function Navbar() {
 
    return (
       <>
-         <nav className='flex flex-row h-fit py-4 border-2 justify-around items-center border-t-0 border-l-0 border-r-0'>
+         <nav className='flex flex-row h-[80px] py-4 justify-around items-center border-t-0 border-l-0 border-r-0'>
             <div className="flex gap-4 items-center">
                <Link href="/">
                   <h2 className={`${poppins.className} ${pathname === "/" ? "hidden" : "block"}`}>Phind</h2>
                </Link>
-               <Link href="/prompt">
+               <Link className={`${pathname === "/" ? "block" : "hidden"}`} href="/prompt">
                   <Button variant="ghost">Chat</Button>
                </Link>
             </div>

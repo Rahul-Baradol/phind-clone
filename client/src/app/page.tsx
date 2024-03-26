@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ const poppins = Poppins({
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
+  const router = useRouter();
 
   return (
     <>
@@ -47,24 +49,7 @@ export default function Home() {
           </CardContent>
           <CardFooter className="flex justify-end">
             <Link href={`/prompt?query=${prompt}`}>
-              <Button onClick={async () => {
-                try {
-                  const response = await fetch("http://localhost:8000/prompt", {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                      prompt: prompt,
-                    }),
-                  })
-
-                  const data = await response.json();
-                  console.log(data);
-                } catch {
-                  console.log("failed to fetch");
-                }
-              }}>Submit</Button>
+              <Button>Submit</Button>
             </Link>
           </CardFooter>
         </Card>
