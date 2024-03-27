@@ -21,10 +21,10 @@ function Navbar() {
                <Link href="/">
                   <h2 className={`${poppins.className} ${pathname === "/" ? "hidden" : "block"}`}>Phind</h2>
                </Link>
-               <Link className={`${pathname === "/" ? "block" : "hidden"}`} href="/prompt">
+               {/* <Link className={`${pathname === "/" ? "block" : "hidden"}`} href="/prompt">
                   <Button variant="ghost">Chat</Button>
-               </Link>
-            </div>
+               </Link>  */}
+         </div>
             <ul className='flex gap-4'>
                <li><a href="#">Sign in</a></li>
                <li><a href="#">Sign up</a></li>

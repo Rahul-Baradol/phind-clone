@@ -101,10 +101,16 @@ def read_item(prompt: Prompt):
    for ele in results:
       requiredData.append(ele.payload)
 
-   conversations.insert_one({
-      "query": query,
-      "response": requiredData
-   })   
+   count_of_documents = conversations.estimated_document_count()
+
+   conversations.update_one({
+      "_id": count_of_documents,
+   }, {
+      "$set": {
+         "query": query,
+         "response": requiredData
+      }
+   }, upsert=True)  
 
    return {
       "status": "success",

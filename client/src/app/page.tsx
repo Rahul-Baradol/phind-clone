@@ -48,7 +48,7 @@ export default function Home() {
             }} type="text" placeholder="How may i help you?" />
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Link href={`/prompt?query=${prompt}`}>
+            <Link className={`${prompt.length > 0 ? "" : "pointer-events-none"}`} href={`/prompt?query=${prompt}`}>
               <Button>Submit</Button>
             </Link>
           </CardFooter>
