@@ -8,6 +8,7 @@ from qdrant_client.http import models
 from sentence_transformers import SentenceTransformer
 from openai import OpenAI
 from dotenv import load_dotenv
+import pymongo
 
 import os
 load_dotenv(".env.local")
@@ -22,6 +23,9 @@ app = FastAPI()
 openai_api_key = os.getenv('OPENAI_API_KEY')
 qdrant_cloud_endpoint = os.getenv('QDRANT_CLOUD_ENDPOINT')
 qdrant_api_key = os.getenv('QDRANT_API_KEY')
+mongodbURI = os.getenv("MONGODB_URI")
+
+mongo_client = pymongo.MongoClient(mongodbURI)
 
 openAI_Client = OpenAI(
   api_key=openai_api_key
@@ -31,6 +35,9 @@ qdrant_client = QdrantClient(
    url=qdrant_cloud_endpoint,
    api_key=qdrant_api_key
 )
+
+db = mongo_client["phindClone"]
+conversations = db["conversations"]
 
 # Enable CORS
 app.add_middleware(
@@ -93,6 +100,11 @@ def read_item(prompt: Prompt):
    requiredData = []
    for ele in results:
       requiredData.append(ele.payload)
+
+   conversations.insert_one({
+      "query": query,
+      "response": requiredData
+   })   
 
    return {
       "status": "success",
