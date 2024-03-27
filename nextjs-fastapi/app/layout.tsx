@@ -1,8 +1,5 @@
-"use client"
-
 import type { Metadata } from "next";
 import "./globals.css";
-import { usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Create Next App",

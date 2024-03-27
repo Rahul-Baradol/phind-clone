@@ -4,19 +4,8 @@ import { Button } from "@/components/ui/button"
 import {
    Card,
    CardContent,
-   CardFooter,
-   CardHeader,
-   CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-   Select,
-   SelectContent,
-   SelectItem,
-   SelectTrigger,
-   SelectValue,
-} from "@/components/ui/select"
 import { Poppins } from 'next/font/google';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -28,7 +17,7 @@ const poppins = Poppins({
    weight: "100",
 });
 
-function page() {
+function Page() {
    const searchParams = useSearchParams();
    const [query, setQuery] = useState(searchParams.get("query"));
    const [data, setData] = useState<any | null>(null);
@@ -39,6 +28,7 @@ function page() {
 
    useEffect(() => {
       setData(null)
+      setMainData(null)
       setNewQuery("")
 
       if (query) {
@@ -51,7 +41,7 @@ function page() {
                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-               prompt: query
+               prompt: searchParams.get("query")
             })
          }).then(res => res.json()).then(returnedData => {
             setMainData(returnedData.response)
@@ -83,7 +73,7 @@ function page() {
          <div className='w-screen h-fit flex justify-center'>
             <div className='w-fit h-fit shadow-2xl flex flex-col gap-6 py-5 rounded-xl'>
                <div className='text-2xl px-10 w-[90vw] h-fit'>{query}</div>
-               <div className='flex md:flex-row flex-col w-[90vw] md:justify-around items-center md:items-start'>
+               <div className='flex md:flex-row flex-col-reverse w-[90vw] md:justify-around items-center md:items-start'>
                   <div className='flex flex-col gap-4'>
                      <div>Answer</div>
                      <div className='w-[95vw] md:w-[50vw]'>
@@ -159,4 +149,4 @@ function page() {
    )
 }
 
-export default page
+export default Page

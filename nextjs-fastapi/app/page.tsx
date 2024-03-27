@@ -1,7 +1,6 @@
 "use client"
 
 import { Poppins } from "next/font/google";
-import Image from "next/image";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button"
@@ -9,20 +8,9 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -31,7 +19,6 @@ const poppins = Poppins({
 
 export default function Home() {
   const [prompt, setPrompt] = useState("");
-  const router = useRouter();
 
   return (
     <>
