@@ -1,0 +1,8 @@
+fastapi==0.100.1
+qdrant_client
+sentence_transformers
+openai
+pymongo
+python-dotenv
+pydantic
+uvicorn[standard]==0.23.2

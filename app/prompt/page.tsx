@@ -48,8 +48,6 @@ function Page() {
 
             for (let i = 0; i < returnedData.response.length; i++) {
                setData((currentData: any) => {
-                  console.log(currentData);
-                  
                   if (currentData === null) {
                      return returnedData.response[i].data
                   } else {
@@ -84,19 +82,19 @@ function Page() {
                            //    </div>
                            // })
                            data ? <Typewriter typeSpeed={1} loop={1} words={[data.substr(0, 4000)]} /> : <div className='flex flex-col gap-4'>
-                                 {
-                                    new Array(20).fill(0).map((_, index) => {
-                                       return <div
-                                          className="animate-pulse h-4 w-full bg-slate-800"
-                                          key={index}
-                                          style={{
-                                             animationDelay: `${index * 0.05}s`,
-                                             animationDuration: '1s'
-                                          }}
-                                       ></div>
-                                    })
-                                 }
-                              </div>
+                              {
+                                 new Array(20).fill(0).map((_, index) => {
+                                    return <div
+                                       className="animate-pulse h-4 w-full bg-slate-800"
+                                       key={index}
+                                       style={{
+                                          animationDelay: `${index * 0.05}s`,
+                                          animationDuration: '1s'
+                                       }}
+                                    ></div>
+                                 })
+                              }
+                           </div>
                         }
                      </div>
                   </div>
