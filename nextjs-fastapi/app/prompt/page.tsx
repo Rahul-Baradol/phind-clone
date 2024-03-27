@@ -21,6 +21,7 @@ import { Poppins } from 'next/font/google';
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { Typewriter } from "react-simple-typewriter"
 
 const poppins = Poppins({
    subsets: ["latin"],
@@ -30,7 +31,8 @@ const poppins = Poppins({
 function page() {
    const searchParams = useSearchParams();
    const [query, setQuery] = useState(searchParams.get("query"));
-   const [data, setData] = useState<any[] | null>(null);
+   const [data, setData] = useState<any | null>(null);
+   const [mainData, setMainData] = useState<any[] | null>(null);
    const pathname = usePathname();
 
    const [newQuery, setNewQuery] = useState("");
@@ -51,9 +53,20 @@ function page() {
             body: JSON.stringify({
                prompt: query
             })
-         }).then(res => res.json()).then(data => {
-            setData(data.response)
-            console.log(data.response);
+         }).then(res => res.json()).then(returnedData => {
+            setMainData(returnedData.response)
+
+            for (let i = 0; i < returnedData.response.length; i++) {
+               setData((currentData: any) => {
+                  console.log(currentData);
+                  
+                  if (currentData === null) {
+                     return returnedData.response[i].data
+                  } else {
+                     return currentData + returnedData.response[i].data
+                  }
+               })
+            }
          })
       }
    }, [searchParams.get("query")])
@@ -70,17 +83,17 @@ function page() {
          <div className='w-screen h-fit flex justify-center'>
             <div className='w-fit h-fit shadow-2xl flex flex-col gap-6 py-5 rounded-xl'>
                <div className='text-2xl px-10 w-[90vw] h-fit'>{query}</div>
-               <div className='flex md:flex-row flex-col w-[90vw] justify-around'>
+               <div className='flex md:flex-row flex-col w-[90vw] md:justify-around items-center md:items-start'>
                   <div className='flex flex-col gap-4'>
                      <div>Answer</div>
                      <div className='w-[95vw] md:w-[50vw]'>
                         {
-                           Array.isArray(data) ? data.map((item: { data: string }, index: number) => {
-                              return <div key={index} className='p-4 border-2'>
-                                 {item.data}
-                              </div>
-                           })
-                              : <div className='flex flex-col gap-4'>
+                           // Array.isArray(data) ? data.map((item: { data: string }, index: number) => {
+                           //    return <div key={index} className='p-4 w-[95vw] break-words md:w-[50vw]'>
+                           //       {item.data}
+                           //    </div>
+                           // })
+                           data ? <Typewriter typeSpeed={1} loop={1} words={[data.substr(0, 4000)]} /> : <div className='flex flex-col gap-4'>
                                  {
                                     new Array(20).fill(0).map((_, index) => {
                                        return <div
@@ -102,10 +115,8 @@ function page() {
                      <div className='w-[30vw]'>Sources</div>
                      <div className='min-w-[30vw] h-fit flex flex-col items-center px-4 gap-4'>
                         {
-                           Array.isArray(data) ? data.map((item: { links: string }, index: number) => {
-                              return <div key={index} className=''>
-                                 <Link href={item.links}>{item.links}</Link>
-                              </div>
+                           Array.isArray(mainData) ? mainData.map((item: { links: string }, index: number) => {
+                              return <Link className="p-4 break-words w-[95vw] md:w-[30vw]" key={index} href={item.links}>{item.links}</Link>
                            })
                               : <div className='flex flex-col gap-4'>
                                  {
