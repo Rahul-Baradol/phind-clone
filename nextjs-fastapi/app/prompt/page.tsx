@@ -1,18 +1,46 @@
 "use client"
 
-import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from "@/components/ui/button"
+import {
+   Card,
+   CardContent,
+   CardFooter,
+   CardHeader,
+   CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+   Select,
+   SelectContent,
+   SelectItem,
+   SelectTrigger,
+   SelectValue,
+} from "@/components/ui/select"
+import { Poppins } from 'next/font/google';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+
+const poppins = Poppins({
+   subsets: ["latin"],
+   weight: "100",
+});
 
 function page() {
    const searchParams = useSearchParams();
    const [query, setQuery] = useState(searchParams.get("query"));
    const [data, setData] = useState<any[] | null>(null);
+   const pathname = usePathname();
+
+   const [newQuery, setNewQuery] = useState("");
 
    useEffect(() => {
+      setData(null)
+      setNewQuery("")
+
       if (query) {
-         setQuery(query)
+         setQuery(searchParams.get("query"))
 
          // Do something with the query
          fetch("/api/prompt", {
@@ -32,6 +60,13 @@ function page() {
 
    return (
       <>
+         <nav className='flex flex-row h-[100px] py-4 justify-center items-center border-t-0 border-l-0 border-r-0'>
+            <div className="flex gap-4 items-center">
+               <Link href="/">
+                  <h2 className={`${poppins.className} ${pathname === "/" ? "hidden" : "block"} ${poppins.className} text-3xl `}>Phind</h2>
+               </Link>
+            </div>
+         </nav>
          <div className='w-screen h-fit flex justify-center'>
             <div className='w-fit h-fit shadow-2xl flex flex-col gap-6 py-5 rounded-xl'>
                <div className='text-2xl px-10 w-[90vw] h-fit'>{query}</div>
@@ -41,34 +76,47 @@ function page() {
                      <div className='w-[95vw] md:w-[50vw]'>
                         {
                            Array.isArray(data) ? data.map((item: { data: string }, index: number) => {
-                              return <div key={index} className='p-4'>
-                                 <h3>{item.data}</h3>
+                              return <div key={index} className='p-4 border-2'>
+                                 {item.data}
                               </div>
                            })
                               : <div className='flex flex-col gap-4'>
                                  {
                                     new Array(20).fill(0).map((_, index) => {
-                                       return <Skeleton className="h-4 w-full" key={index} />
+                                       return <div
+                                          className="animate-pulse h-4 w-full bg-slate-800"
+                                          key={index}
+                                          style={{
+                                             animationDelay: `${index * 0.05}s`,
+                                             animationDuration: '1s'
+                                          }}
+                                       ></div>
                                     })
                                  }
                               </div>
                         }
                      </div>
                   </div>
-                  
+
                   <div className='flex flex-col items-center gap-2'>
                      <div className='w-[30vw]'>Sources</div>
                      <div className='min-w-[30vw] h-fit flex flex-col items-center px-4 gap-4'>
                         {
                            Array.isArray(data) ? data.map((item: { links: string }, index: number) => {
-                              return <div key={index} className=''> 
+                              return <div key={index} className=''>
                                  <Link href={item.links}>{item.links}</Link>
                               </div>
                            })
                               : <div className='flex flex-col gap-4'>
-                                 {    
+                                 {
                                     new Array(20).fill(0).map((_, index) => {
-                                       return <Skeleton className="h-4 w-[95vw] md:w-[30vw]" key={index} />
+                                       return <div className="animate-pulse bg-slate-800 h-4 w-[95vw] md:w-[30vw]"
+                                          key={index}
+                                          style={{
+                                             animationDelay: `${index * 0.05}s`,
+                                             animationDuration: '1s'
+                                          }}
+                                       ></div>
                                     })
                                  }
                               </div>
@@ -79,6 +127,23 @@ function page() {
                </div>
             </div>
          </div>
+
+         <div className="w-screen h-fit fixed bottom-3 flex justify-center">
+            <Card className="shadow-2xl shadow-slate-900 w-[80vw] sm:w-[45vw] dark pt-7">
+               <CardContent className="rounded-3xl flex gap-5">
+                  <Input value={newQuery}
+                     onChange={e => {
+                        setNewQuery(e.target.value);
+                     }}
+                     type="text"
+                     placeholder="Ask any query..." />
+                  <Link className={`${newQuery.length > 0 ? "" : "pointer-events-none opacity-25 transition-opacity duration-1000"}`} href={`/prompt?query=${newQuery}`}>
+                     <Button>Submit</Button>
+                  </Link>
+               </CardContent>
+            </Card>
+         </div>
+
       </>
    )
 }

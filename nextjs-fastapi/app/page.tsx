@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -41,14 +40,14 @@ export default function Home() {
           phind
         </div>
 
-        <Card className="w-[80vw] sm:w-[45vw] dark pt-7">
+        <Card className="shadow-2xl shadow-slate-900 w-[80vw] sm:w-[45vw] dark pt-7">
           <CardContent>
             <Input value={prompt} onChange={e => {
               setPrompt(e.target.value);
             }} type="text" placeholder="How may i help you?" />
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Link className={`${prompt.length > 0 ? "" : "pointer-events-none"}`} href={`/prompt?query=${prompt}`}>
+            <Link className={`${prompt.length > 0 ? "" : "pointer-events-none opacity-25 transition-opacity duration-1000"}`} href={`/prompt?query=${prompt}`}>
               <Button>Submit</Button>
             </Link>
           </CardFooter>
