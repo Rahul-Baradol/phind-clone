@@ -33,14 +33,21 @@ To set up this project locally, follow these steps:
   npm run dev
 ```
 
-#### Note: 
 Here the Nextjs and FastAPI servers run concurrently. When <code>npm run dev</code> is run, necessary python packages will also be installed. The required python packages could be found in **requirements.txt**
 
-Also make sure to rename the file .env.template to .env.local and give the following api keys
+Also make sure to rename the file **.env.template** to **.env.local** and give the following api keys
 <code>QDRANT_CLOUD_ENDPOINT</code>
 <code>QDRANT_API_KEY</code>
 <code>OPENAI_API_KEY</code>
 <code>MONGODB_URI</code>
+
+Then hit the endpoint http://localhost:3000/api/status, to confirm if the FastAPI Server is up and running. The expected response is 
+```javascript
+{
+  "status": "alive"
+}
+```
+Thereafter you can go to url http://localhost:3000 to use the actual application.
 
 ## Demo
 
